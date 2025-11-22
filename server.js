@@ -1,43 +1,4 @@
-// // import express from "express";
-// // import dotenv from "dotenv";
-// // import mongoose from "mongoose";
-// // import cors from "cors";
-// // import authRoutes from "./routes/authRoutes.js";
-// // import movementRoutes from "./routes/movementRoutes.js";
-// // import userRoutes from "./routes/userRoutes.js";
-// // import path from "path";
 
-
-// // dotenv.config();
-// // const app = express();
-
-// // // Middleware
-// // app.use(cors());
-// // app.use(express.json());
-// // app.use("/api/auth", authRoutes);
-// // app.use("/api/movements", movementRoutes);
-// // app.use("/api/users", userRoutes); // 👈 Add this
-// // app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
-
-
-// // // Database Connection
-// // mongoose.connect(process.env.MONGO_URI)
-// // .then(() => console.log("✅ MongoDB Connected"))
-// // .catch(err => console.log("❌ MongoDB Error:", err));
-
-// // // Test route
-// // app.get("/", (req, res) => {
-// //   res.send("MPMMS Backend is Running...");
-// // });
-
-// // // Server start
-// // const PORT = process.env.PORT || 5000;
-// // // app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
-
-
-// // app.listen(PORT, '0.0.0.0', () => {
-// //   console.log(`Server running on port ${PORT}`);
-// // });
 // import express from "express";
 // import dotenv from "dotenv";
 // import mongoose from "mongoose";
@@ -62,6 +23,9 @@
 
 // // Serve uploaded files (profile photos)
 // app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+
+// // Serve assets (logo, images, etc.)
+// app.use('/assets', express.static(path.join(__dirname, 'public', 'assets')));
 
 // // Serve reset password HTML page
 // app.get("/reset-password/:token", (req, res) => {
@@ -160,7 +124,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve uploaded files (profile photos)
+// UPDATED: Keep this for backward compatibility with existing local photos
+// But new uploads will go to Cloudinary
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 // Serve assets (logo, images, etc.)
@@ -223,7 +188,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Test route
 app.get("/", (req, res) => {
-  res.send("MPMMS Backend is Running...");
+  res.send("MPMMS Backend is Running with Cloudinary Support...");
 });
 
 // Error handling middleware
@@ -239,5 +204,6 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`☁️  Cloudinary integration active`);
   console.log(`📝 Reset password page available at: http://localhost:${PORT}/reset-password/:token`);
 });
